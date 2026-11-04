@@ -1,26 +1,189 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-paper: #ffffff;
+  --color-canvas: #faf9f6;
+  --color-ink: #16161a;
+  --color-ink-2: #3c3c43;
+  --color-muted: #6e6e78;
+  --color-faint: #a3a3ab;
+  --color-line: #ebe9e4;
+  --color-line-2: #dedbd4;
+
+  --color-red: #d7263d;
+  --color-red-deep: #a8182c;
+  --color-red-soft: #fdeef0;
+  --color-red-line: #f6c9cf;
+
+  --color-sun: #f5b82e;
+  --color-sun-deep: #8a6400;
+  --color-sun-soft: #fff6dc;
+  --color-sun-line: #f6e2a6;
+
+  --radius-card: 14px;
+  --shadow-card: 0 1px 0 rgba(22, 22, 26, 0.04), 0 1px 3px rgba(22, 22, 26, 0.04);
+  --shadow-pop: 0 10px 30px -10px rgba(22, 22, 26, 0.25), 0 2px 6px rgba(22, 22, 26, 0.06);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  color-scheme: light;
+}
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+::selection {
+  background: var(--color-sun-soft);
+}
+:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  .card {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    height: 2.25rem;
+    padding: 0 0.9rem;
+    border-radius: 9px;
+    font-size: 0.875rem;
+    font-weight: 550;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
+    cursor: pointer;
+  }
+  .btn:active {
+    transform: translateY(0.5px);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--color-red);
+    color: #fff;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  }
+  .btn-primary:hover {
+    background: var(--color-red-deep);
+  }
+  .btn-dark {
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .btn-dark:hover {
+    background: #2a2a31;
+  }
+  .btn-ghost {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line-2);
+    color: var(--color-ink);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-faint);
+  }
+  .btn-quiet {
+    color: var(--color-muted);
+  }
+  .btn-quiet:hover {
+    color: var(--color-ink);
+    background: var(--color-canvas);
+  }
+  .btn-sm {
+    height: 1.9rem;
+    padding: 0 0.65rem;
+    font-size: 0.8125rem;
+    border-radius: 8px;
+  }
+  .field {
+    width: 100%;
+    height: 2.4rem;
+    padding: 0 0.75rem;
+    border-radius: 9px;
+    border: 1px solid var(--color-line-2);
+    background: var(--color-paper);
+    font-size: 0.9rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  textarea.field {
+    height: auto;
+    padding: 0.6rem 0.75rem;
+    line-height: 1.5;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-red);
+    box-shadow: 0 0 0 3px var(--color-red-soft);
+  }
+  .label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-ink-2);
+    margin-bottom: 0.35rem;
+  }
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .table-row {
+    border-top: 1px solid var(--color-line);
+  }
+  .table-row:hover {
+    background: #fcfbf9;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(215, 38, 61, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(215, 38, 61, 0);
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .pulse-dot {
+    animation: none;
+  }
 }
