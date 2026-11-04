@@ -41,7 +41,7 @@ export const loadWorkspace = cache(async (): Promise<FullWorkspace> => {
     .order("created_at")
     .limit(1)
     .maybeSingle();
-  if (!membership) redirect("/onboarding");
+  if (!membership) redirect(auth.user.is_anonymous ? "/demo" : "/onboarding");
   const business = membership.businesses as unknown as Business;
   const b = business.id;
 
@@ -76,5 +76,5 @@ export const loadWorkspace = cache(async (): Promise<FullWorkspace> => {
     await supabase.from("messages").insert(due.map((m) => ({ ...m, business_id: b, status: "queued" })));
     data = await fetchAll();
   }
-  return { business, ...data, userEmail: auth.user.email ?? "", now, baseUrl: url };
+  return { business, ...data, userEmail: auth.user.is_anonymous ? "Demo visitor" : auth.user.email ?? "", now, baseUrl: url };
 });

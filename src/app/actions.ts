@@ -35,7 +35,12 @@ export async function signIn(_: unknown, form: FormData) {
 
 export async function openDemo() {
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email: process.env.DEMO_EMAIL!, password: process.env.DEMO_PASSWORD! });
+  const { data: existing } = await supabase.auth.getUser();
+  if (!existing.user) {
+    const { error } = await supabase.auth.signInAnonymously();
+    if (error) redirect("/login?error=demo");
+  }
+  const { error } = await supabase.rpc("start_demo");
   if (error) redirect("/login?error=demo");
   redirect("/app");
 }

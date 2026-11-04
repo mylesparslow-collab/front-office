@@ -28,10 +28,14 @@ Nothing is ever delivered to a customer from this app. "Approve" records the mes
 
 Run the files in `supabase/` in order in the SQL editor. `04_demo_workspaces.sql` needs two passwords set with `set_config` first (see the file header). A `pg_cron` job resets demo data nightly.
 
+## Demo
+
+`/demo` (and every "Explore the live demo" button) signs the visitor in anonymously and gives them a private copy of the sample workspace (`start_demo()` in `06_private_demos.sql`). No shared password exists, visitors can't see each other's changes, and sandboxes are deleted after three days. Anonymous sign-ins must be enabled in Supabase Auth settings.
+
 ## Develop
 
 ```bash
-cp .env.example .env.local   # fill in values
+cp .env.example .env.local   # optional: defaults point at the hosted project
 npm install
 npm run dev
 npm test                     # chase engine + metrics unit tests
