@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { BarChart3, FileText, Inbox, LayoutGrid, Receipt, Settings, Sun } from "lucide-react";
+import { BarChart3, FileText, Inbox, LayoutGrid, Receipt, Settings, Sparkles, Sun } from "lucide-react";
 
 const items = [
   { href: "/app", label: "Today", icon: Sun, exact: true },
@@ -11,6 +11,7 @@ const items = [
   { href: "/app/quotes", label: "Quotes", icon: FileText },
   { href: "/app/invoices", label: "Invoices", icon: Receipt },
   { href: "/app/chasers", label: "Follow-ups", icon: Inbox },
+  { href: "/app/automations", label: "Automations", icon: Sparkles },
   { href: "/app/numbers", label: "Numbers", icon: BarChart3 },
 ];
 
@@ -55,11 +56,11 @@ export function BottomNav({ counts }: { counts: Record<string, number> }) {
   const path = usePathname();
   const active = (h: string, exact?: boolean) => (exact ? path === h : path === h || path.startsWith(h + "/"));
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-6 border-t border-line bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-7 border-t border-line bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
       {items.map(({ href, label, icon: Icon, exact }) => (
         <Link key={href} href={href} className={clsx("relative flex flex-col items-center gap-0.5 py-2 text-[10.5px] font-medium", active(href, exact) ? "text-red" : "text-muted")}>
           <Icon size={18} />
-          {label === "Follow-ups" ? "Follow" : label}
+          {label === "Follow-ups" ? "Follow" : label === "Automations" ? "Auto" : label}
           {counts[href] ? <span className="absolute top-1 right-[22%] size-2 rounded-full bg-red ring-2 ring-paper" /> : null}
         </Link>
       ))}
